@@ -82,12 +82,12 @@ export default function Settings() {
     typeof (err as any).response === "object"
   ) {
     const axiosErr = err as { response?: { data?: { error?: string } } };
-    setPasswordError(axiosErr.response?.data?.error || "Failed to update password.");
+    setPasswordError(axiosErr.response?.data?.error || "Login failed. Please try again.");
   } else {
     setPasswordError("An unexpected error occurred.");
   }
-  console.error("Password Update Error:", err);
 }
+
   };
 
   const handleDeleteAccount = async () => {

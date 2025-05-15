@@ -18,7 +18,7 @@ export default function Services() {
   useEffect(() => {
     axios.get<IService[]>("/api/services")
       .then(res => setServices(res.data))
-      .catch(_ => setError("Failed to load services."));
+      .catch(() => setError("Failed to load services."));
   }, []);
 
   return (

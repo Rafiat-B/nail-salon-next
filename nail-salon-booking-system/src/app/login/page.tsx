@@ -45,11 +45,19 @@ export default function Login() {
       } else {
         router.push("/dashboard");
       }
-    } catch (err: any) {
-      // Handle error response from server
-      const errorMessage = err.response?.data?.error || "Login failed. Please try again.";
-      setError(errorMessage);
-    }
+    } catch (err: unknown) {
+  if (
+    typeof err === "object" &&
+    err !== null &&
+    "response" in err &&
+    typeof (err as any).response === "object"
+  ) {
+    const axiosErr = err as { response?: { data?: { error?: string } } };
+    setError(axiosErr.response?.data?.error || "Login failed. Please try again.");
+  } else {
+    setError("An unexpected error occurred.");
+  }
+}
   };
 
   return (
