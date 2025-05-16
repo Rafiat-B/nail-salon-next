@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: { id: string } } // This type is fine, but we'll make it more explicit
 ) {
   try {
     await dbConnect();
