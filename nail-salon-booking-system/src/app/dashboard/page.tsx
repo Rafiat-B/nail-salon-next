@@ -94,8 +94,14 @@ export default function Dashboard() {
     fetchAppointments();
   }, [user]);
 
+
   return (
     <div className="min-h-screen flex bg-white">
+      {error && (
+      <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">
+        {error}
+      </div>
+      )}
       {/* Sidebar */}
       <aside className="w-1/4 bg-pink-600 p-4 h-screen">
         <h2 className="text-xl font-bold text-white">Dashboard</h2>

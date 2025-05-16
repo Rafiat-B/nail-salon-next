@@ -45,8 +45,10 @@ export async function GET() {
     }
 
     return NextResponse.json(services, { status: 200 });
-  } catch (_) {
-    return NextResponse.json({ error: "Failed to fetch services" }, { status: 500 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: "Failed to fetch services" }, { status: 500 });
+    }
   }
 }
 

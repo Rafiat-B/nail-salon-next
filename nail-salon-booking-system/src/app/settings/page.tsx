@@ -68,21 +68,23 @@ export default function Settings() {
       return;
     }
 
-    try {
-      await axios.put(`/api/users/${userData._id}/password`, { oldPassword, newPassword });
-      setOldPassword("");
-      setNewPassword("");
-      setPasswordError("");
-      alert("Password updated successfully!");
-    } catch (err: unknown) {
+try {
+  await axios.put(`/api/users/${userData._id}/password`, { oldPassword, newPassword });
+  setOldPassword("");
+  setNewPassword("");
+  setPasswordError("");
+  alert("Password updated successfully!");
+} catch (err: unknown) {
   if (
+    err &&
     typeof err === "object" &&
-    err !== null &&
     "response" in err &&
-    typeof (err as any).response === "object"
+    typeof (err as { response?: { data?: { error?: string } } }).response === "object"
   ) {
-    const axiosErr = err as { response?: { data?: { error?: string } } };
-    setPasswordError(axiosErr.response?.data?.error || "Login failed. Please try again.");
+    setPasswordError(
+      (err as { response?: { data?: { error?: string } } }).response?.data?.error ||
+        "Login failed. Please try again."
+    );
   } else {
     setPasswordError("An unexpected error occurred.");
   }

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://D%3A/JUZT-OYIN/nail-salon-next/nail-salon-booking-system/src/app/logout/page.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport { useEffect } from \"react\";\r\nimport { useRouter } from \"next/navigation\";\r\n\r\nexport default function Logout() {\r\n  const router = useRouter();\r\n\r\n  useEffect(() => {\r\n    console.log(\"Logging out...\"); // Debug\r\n    // Clear user from localStorage\r\n    localStorage.removeItem(\"user\");\r\n    // Redirect to homepage\r\n    router.push(\"/\");\r\n  }, [router]);\r\n\r\n  return (\r\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\r\n      <p className=\"text-gray-600\">Logging out...</p>\r\n    </div>\r\n  );\r\n}"],"names":[],"mappings":";;;;AAEA;AACA;AAHA;;;;AAKe,SAAS;IACtB,MAAM,SAAS,CAAA,GAAA,kIAAA,CAAA,YAAS,AAAD;IAEvB,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,QAAQ,GAAG,CAAC,mBAAmB,QAAQ;QACvC,+BAA+B;QAC/B,aAAa,UAAU,CAAC;QACxB,uBAAuB;QACvB,OAAO,IAAI,CAAC;IACd,GAAG;QAAC;KAAO;IAEX,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC;YAAE,WAAU;sBAAgB;;;;;;;;;;;AAGnC"}},
+    {"offset": {"line": 44, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

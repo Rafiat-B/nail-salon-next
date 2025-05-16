@@ -24,41 +24,49 @@ export default function Login() {
       return;
     }
 
-    try {
-      interface LoginResponse {
-        user: {
-          role: string;
-          [key: string]: any; // Add other user properties if needed
+  try {
+    interface LoginResponse {
+      user: {
+        role: string;
+        [key: string]: unknown; // Add other user properties if needed
+      };
+    }
+
+    const res = await axios.post<LoginResponse>("/api/auth/login", { email, password }, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    // Store the full user object in localStorage
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
+    // Redirect based on role
+    if (res.data.user.role === "admin") {
+      router.push("/admin");
+    } else {
+      router.push("/dashboard");
+    }
+  } catch (err: unknown) {
+    // Define a type for Axios error structure
+    type AxiosErrorResponse = {
+      response?: {
+        data?: {
+          error?: string;
         };
-      }
+      };
+    };
 
-      const res = await axios.post<LoginResponse>("/api/auth/login", { email, password }, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      // Store the full user object in localStorage
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      // Redirect based on role
-      if (res.data.user.role === "admin") {
-        router.push("/admin");
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (err: unknown) {
-  if (
-    typeof err === "object" &&
-    err !== null &&
-    "response" in err &&
-    typeof (err as any).response === "object"
-  ) {
-    const axiosErr = err as { response?: { data?: { error?: string } } };
-    setError(axiosErr.response?.data?.error || "Login failed. Please try again.");
-  } else {
-    setError("An unexpected error occurred.");
+    if (
+      typeof err === "object" &&
+      err !== null &&
+      "response" in err
+    ) {
+      const axiosErr = err as AxiosErrorResponse;
+      setError(axiosErr.response?.data?.error || "Login failed. Please try again.");
+    } else {
+      setError("An unexpected error occurred.");
+    }
   }
-}
-  };
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">

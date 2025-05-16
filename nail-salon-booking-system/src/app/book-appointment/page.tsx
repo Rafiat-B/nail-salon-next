@@ -87,6 +87,9 @@ export default function BookAppointment() {
     }
   };
 
+  if (!isClient) {
+    return null; // Prevents SSR issues with DatePicker
+  }
   return (
     <div className="min-h-screen bg-white p-6">
       {isLoggedIn && (
