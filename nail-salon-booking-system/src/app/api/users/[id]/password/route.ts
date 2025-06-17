@@ -7,8 +7,7 @@ import User from "@/models/User";
 export const dynamic = "force-dynamic";
 
 export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
+  req: NextRequest, {params}: { params: { id: string } }
 ) {
   try {
     await dbConnect();
@@ -22,7 +21,7 @@ export async function PUT(
       );
     }
 
-    const userId = context.params.id;
+    const userId = params.id;
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
