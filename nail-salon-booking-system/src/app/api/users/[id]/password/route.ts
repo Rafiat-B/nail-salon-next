@@ -3,14 +3,14 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/app/lib/dbConnect";
 import User from "@/models/User";
 
-// Ensure dynamic route works properly in production
 export const dynamic = "force-dynamic";
 
-export async function PUT(
-  req: NextRequest, {params}: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest): Promise<NextResponse> {
   try {
     await dbConnect();
+
+    const url = new URL(req.url);
+    const id = url.pathname.split("/").slice(-2, -1)[0]; // Extract user ID from URL
 
     const { newPassword } = await req.json();
 
@@ -21,12 +21,10 @@ export async function PUT(
       );
     }
 
-    const userId = params.id;
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     const user = await User.findByIdAndUpdate(
-      userId,
+      id,
       { password: hashedPassword },
       { new: true }
     ).select("-password");
