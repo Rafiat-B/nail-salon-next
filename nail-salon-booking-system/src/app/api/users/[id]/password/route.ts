@@ -6,13 +6,10 @@ import User from "@/models/User";
 // Ensure dynamic route works properly in production
 export const dynamic = "force-dynamic";
 
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
-
-export async function PUT(req: NextRequest, { params }: RouteParams) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     await dbConnect();
 
@@ -25,10 +22,12 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       );
     }
 
+    const userId = context.params.id;
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     const user = await User.findByIdAndUpdate(
-      params.id,
+      userId,
       { password: hashedPassword },
       { new: true }
     ).select("-password");
