@@ -6,10 +6,13 @@ import User from "@/models/User";
 // Ensure dynamic route works properly in production
 export const dynamic = "force-dynamic";
 
-export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } } // This type is fine, but we'll make it more explicit
-) {
+type RouteParams = {
+  params: {
+    id: string;
+  };
+};
+
+export async function PUT(req: NextRequest, { params }: RouteParams) {
   try {
     await dbConnect();
 
@@ -22,21 +25,16 @@ export async function PUT(
       );
     }
 
-    const userId = context.params.id;
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     const user = await User.findByIdAndUpdate(
-      userId,
+      params.id,
       { password: hashedPassword },
       { new: true }
     ).select("-password");
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     return NextResponse.json(
@@ -45,9 +43,6 @@ export async function PUT(
     );
   } catch (error) {
     console.error("Error updating password:", error);
-    return NextResponse.json(
-      { error: "Server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
